@@ -368,6 +368,21 @@
             ¿Tienes una oportunidad de prácticas, un proyecto interesante o simplemente
             quieres conectar? Escríbeme y te respondo.
           </p>
+          <div class="contact-chips" aria-label="Datos de contacto">
+            <div class="contact-chip">
+              <span class="chip-label">Email</span>
+              <a class="chip-value" href="mailto:jairo.m.lucas@gmail.com">jairo.m.lucas@gmail.com</a>
+            </div>
+            <div class="contact-chip">
+              <span class="chip-label">Teléfono</span>
+              <a class="chip-value" href="tel:+34675473180">+34 675 47 31 80</a>
+            </div>
+            <div class="contact-chip">
+              <span class="chip-label">LinkedIn</span>
+              <a class="chip-value" href="https://www.linkedin.com/in/jairomartinlucas/" target="_blank" rel="noopener">Jairo Martín</a>
+            </div>
+          </div>
+
           <form class="contact-form" novalidate>
             <div class="form-row">
               <div class="form-group">
@@ -385,6 +400,10 @@
             </div>
             <button type="submit" class="btn-primary">Enviar mensaje</button>
           </form>
+
+          <div id="form-success" class="form-success" role="alert" aria-live="polite" style="display:none">
+            ¡Mensaje enviado! Te respondo lo antes posible.
+          </div>
         </div>
       </div>
     </section>
@@ -404,14 +423,12 @@
   </footer>
 
   <script>
-    // Hamburger menu toggle
     const hamburger = document.querySelector('.hamburger');
     const navLinks  = document.querySelector('.nav-links');
     hamburger.addEventListener('click', () => {
       const expanded = hamburger.getAttribute('aria-expanded') === 'true';
       hamburger.setAttribute('aria-expanded', String(!expanded));
       navLinks.classList.toggle('nav-open');
-      // Close on nav link click (mobile)
     });
     navLinks.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
@@ -420,7 +437,6 @@
       });
     });
 
-    // Active nav link on scroll
     const sections = document.querySelectorAll('section[id]');
     const navItems  = document.querySelectorAll('.nav-links a');
     const io = new IntersectionObserver((entries) => {
@@ -434,11 +450,32 @@
     }, { threshold: 0.35 });
     sections.forEach(s => io.observe(s));
 
-    // Header scroll shadow
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
+
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', function (e) {
+        const btn      = document.getElementById('submit-btn');
+        const btnText  = btn.querySelector('.btn-text');
+        const btnSend  = btn.querySelector('.btn-sending');
+
+        btnText.style.display = 'none';
+        btnSend.style.display = 'inline';
+        btn.disabled = true;
+
+      });
+
+      if (new URLSearchParams(window.location.search).get('sent') === '1') {
+        const successDiv = document.getElementById('form-success');
+        if (successDiv) {
+          successDiv.style.display = 'block';
+          contactForm.style.display = 'none';
+        }
+      }
+    }
   </script>
 
 </body>
