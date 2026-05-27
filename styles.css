@@ -774,7 +774,6 @@ footer {
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  /* Sin animation — era lo que causaba el problema */
 }
 
 .social-float-link {
