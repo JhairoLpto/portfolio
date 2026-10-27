@@ -763,7 +763,6 @@ footer {
   :root { --container: 1260px; }
 }
 
-/* ── FLOATING SOCIAL ICONS ────────────────────── */
 .social-float {
   position: fixed;
   right: 2rem;
