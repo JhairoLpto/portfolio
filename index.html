@@ -252,10 +252,56 @@
                 <h3>Gestor de Reservas JavaFX — Terminado</h3>
                 <p>Aplicación de escritorio desarrollada en Java utilizando JavaFX para el diseño de la interfaz gráfica y archivos XML para la gestión y lectura de reservas. El proyecto tiene como propósito consolidar conocimientos en el patrón MVC, procesamiento de documentos XML y desarrollo de aplicaciones de escritorio en Java.</p>
                 <div class="project-links">
-                  <a href="https://github.com/pttr44/HotelVoiceAPP" aria-label="Ver repositorio del análisis de ventas" target="_blank">GitHub →</a>
+                  <a href="https://github.com/pttr44/HotelVoiceAPP" aria-label="Ver repositorio del gestor de reservas" target="_blank">GitHub →</a>
+                  <button type="button" class="project-more" aria-expanded="false" aria-controls="detalle-reservas">
+                    <span class="project-more-label">Ver más</span>
+                    <svg class="project-more-icon" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1.5 3.5 5 7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </button>
                 </div>
               </div>
             </article>
+
+            <!-- Detalle del gestor de reservas (se abre con «Ver más») -->
+            <div class="project-detail" id="detalle-reservas" role="region" aria-label="Detalle del gestor de reservas" hidden>
+              <div class="project-detail-inner">
+                <ol class="detail-steps">
+                  <li>
+                    <h4>Pantalla inicial</h4>
+                    <p>La barra superior muestra «HotelApp - Asistente Virtual». El asistente saluda con
+                      «¿En qué puedo ayudarte?». Abajo hay un campo de texto («Escribe o habla…»),
+                      un botón de enviar y un botón de micrófono.</p>
+                  </li>
+                  <li>
+                    <h4>Consulta por texto</h4>
+                    <p>El usuario escribe «hola buenas quiero una suite». El asistente responde que hay
+                      3 suites disponibles y muestra una tarjeta con la Habitación 115 (Suite, 3 personas,
+                      210,0 € por noche) y el botón «Reservar».</p>
+                  </li>
+                  <li>
+                    <h4>Consulta por voz</h4>
+                    <p>Al pulsar el micrófono se abre el reconocimiento de voz de Google, configurado en
+                      español de España, con el mensaje «Dime qué tipo de habitación buscas…». El texto
+                      reconocido se envía al chat como si se hubiera escrito.</p>
+                  </li>
+                </ol>
+                <div class="project-detail-shots">
+                  <figure>
+                    <a href="img/hotelapp-chat.png" target="_blank" aria-label="Abrir captura de la consulta por texto a tamaño completo">
+                      <img src="img/hotelapp-chat.png" width="438" height="934" loading="lazy"
+                        alt="Chat de HotelApp: el usuario pide una suite y el asistente muestra la Habitación 115 con el botón Reservar" />
+                    </a>
+                    <figcaption>Pantalla inicial y consulta por texto</figcaption>
+                  </figure>
+                  <figure>
+                    <a href="img/hotelapp-voz.png" target="_blank" aria-label="Abrir captura de la consulta por voz a tamaño completo">
+                      <img src="img/hotelapp-voz.png" width="438" height="936" loading="lazy"
+                        alt="Diálogo de reconocimiento de voz de Google en español de España sobre el chat de HotelApp" />
+                    </a>
+                    <figcaption>Consulta por voz</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -455,6 +501,26 @@
       });
     }, { threshold: 0.35 });
     sections.forEach(s => io.observe(s));
+
+    // «Ver más» de los proyectos: abre/cierra el panel de detalle
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    document.querySelectorAll('.project-more').forEach(btn => {
+      const panel = document.getElementById(btn.getAttribute('aria-controls'));
+      const label = btn.querySelector('.project-more-label');
+      if (!panel) return;
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        label.textContent = isOpen ? 'Ver más' : 'Ver menos';
+        panel.hidden = isOpen;
+        if (!isOpen) {
+          panel.classList.remove('is-opening');
+          void panel.offsetWidth; // reinicia la animación
+          panel.classList.add('is-opening');
+          panel.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth', block: 'nearest' });
+        }
+      });
+    });
 
     const header = document.querySelector('header');
     window.addEventListener('scroll', () => {
